@@ -1,18 +1,22 @@
 import { styled } from 'styled-components'
 import Login from './pages/Login'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Cadastro from './pages/Cadastro'
 
 function App() {
 
   return (
-    <StyledApp>
-      <div>
-        <div>Logo</div>
-        <div>Menu</div>
-      </div>
-      <div>
-        <Login/>
-      </div>
-    </StyledApp>
+    <BrowserRouter>
+        <StyledApp>
+          <div>Navbar</div>          
+          <div>
+            <Routes>
+              <Route path="/login" element={<Login/>}/> 
+              <Route path="/cadastro" element={<Cadastro/>}/> 
+            </Routes>
+          </div>
+        </StyledApp>
+    </BrowserRouter>
   )
 }
 

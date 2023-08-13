@@ -44,6 +44,15 @@ const Reset = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+ 
+  /*
+    Global Styles
+  */
+  body {
+    background-color: #F9F9F9;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+  }
 `
 
 export { Reset };

@@ -1,52 +1,139 @@
+import { Link } from "react-router-dom"
 import { styled } from "styled-components"
 
 export default function Cadastro() {
 
     return (
-        <CadastroSC>
+        <CadastrarSC>
+            <div>
+                <h1>Logo</h1>
+                <h1>Cadastro</h1>
+            </div>
+
             <form>
-                <label htmlFor="telefone">Número de celular</label>
-                <input name="telefone" type="tel" placeholder="+XXX (XX) XXXX-XXXX"/>
+                <label htmlFor="name">Nome completo</label>
+                <input name="name" type="text" placeholder="Nome completo"/>
+
+                <label htmlFor="cpf">CPF</label>
+                <input name="cpf" type="text" placeholder="CPF"/>
+
+                <label htmlFor="phone">Telefone</label>
+                <span>
+                    <span>+55</span>
+                    <input name="phone" type="text" placeholder="(XX) XXXX-XXXX"/>
+                </span>
 
                 <label htmlFor="email">Email</label>
                 <input name="email" type="email" placeholder="Email"/>
-
-                <label htmlFor="cpf">CPF</label>
-                <input name="cpf" type="number" placeholder="CPF"/>
-
+                
                 <label htmlFor="Password">Senha</label>
                 <input name="Password" type="password" placeholder="Senha"/>
 
-                <label htmlFor="Passwordconfirms">Confirmar senha</label>
-                <input name="Passwordconfirm" type="password" placeholder="Senha"/>
+                <label htmlFor="Password">Confirmar senha</label>
+                <input name="Password" type="password" placeholder="Confirmar senha"/>
 
-
-
-                <button>Cadastrar</button>
-                <a>Já possui uma conta? Faça login</a>
+                <button>Login</button>
             </form>
-        </CadastroSC>
+        
+            <footer>
+               <span>Não possui uma conta?</span> <Link>Cadastre-se</Link> 
+            </footer>
+
+        </CadastrarSC>
     )
 }
 
-const CadastroSC = styled.div`
+const CadastrarSC = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    width: 300px;
+
+    & > div:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
     & > form {
         display: flex;
         flex-direction: column;
-        width: 300px;
+        width: 100%;
         padding: 0px;
-        margin: 0px;
-        gap: 10px;
+
+        padding: 20px;
+        background-color: #FFF;
+        border-radius: 5px;
+
 
         input {
+            box-sizing: border-box;
             width: 100%;
             padding: 10px 20px;
+
+            margin-top: 5px;
+            margin-bottom: 25px;
+
+            border: solid 2px #EEEFF2;
+            border-radius: 5px;
+        }
+
+        > span {
+            display: flex;
+            align-items: center;
+            text-align: center;
+
+            margin-top: 5px;
+            margin-bottom: 25px;
+
+            span {
+                padding: 10px 20px;
+                border: solid 2px #EEEFF2;
+
+                border-right: none;
+                border-radius: 5px 0px 0px 5px;
+                
+                font-size: 16px;
+            }
+
+            input {
+                padding: 10px 20px;                
+                font-size: 14px;
+                margin: 0px;
+                border-radius: 0px 5px 5px 0px;
+            };
         }
 
         button { 
+            box-sizing: border-box;
             width: 100%;
             padding: 10px 20px;
-            margin: 0px 7%; 
+            border-radius: 5px;
+
+            background-color: #2EA44F;
+            border: none;
+            
+            color: #FFF;
+            font-weight: bold;
+        }
+    }
+    
+    footer {
+        display: flex;
+        justify-content: center; 
+        gap: 5px;
+
+        width: 100%;
+        border: solid 2px #EEEFF2;
+        border-radius: 5px;
+        padding: 20px;
+        
+        a {
+            text-decoration: none;
+            color: #2D7DDB;
         }
     }
 `
