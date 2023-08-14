@@ -38,8 +38,6 @@ const PhotoShowSC = styled.div`
     padding: 10px;
     border: 2px solid #EEEFF2;
 
-    
-
     & > img {
         width: 75%;
 
@@ -79,5 +77,4 @@ const Photo = styled.img`
         transition: 0.2s;
         filter: brightness(1);
     }
-
 `;

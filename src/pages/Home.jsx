@@ -20,19 +20,3 @@ const Feed = styled.div`
     align-items: center;
     gap: 48px;
 `;
-
-const mockProduct = {
-    "name": "Bicicleta",
-    "description": "Bicicleta de corrida",
-    "price": 1000,
-    "isAvailable": true,
-    "ownerid": 1,
-    "categoriesId": [
-        {"name": "Esporte"},
-        {"name": "Lazer"}
-    ],
-    "photosId": [
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/301"}
-    ]
-};

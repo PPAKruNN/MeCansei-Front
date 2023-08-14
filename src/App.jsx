@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Cadastro from './pages/Cadastro'
 import Home from './pages/Home'
 import ProductPage from './pages/ProductPage'
+import { NewProduct } from './pages/NovoProduto'
+import Gallery from './components/Gallery'
 
 function App() {
 
@@ -17,6 +19,8 @@ function App() {
               <Route path="/login" element={<Login/>}/> 
               <Route path="/cadastro" element={<Cadastro/>}/> 
               <Route path="/produto/:id" element={<ProductPage/>}/> 
+              <Route path="/produto/novo" element={<NewProduct/>}/> 
+              <Route path="/teste" element={<Gallery/>}/> 
             </Routes>
           </div>
         </StyledApp>
