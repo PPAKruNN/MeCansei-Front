@@ -46,7 +46,7 @@ export default function ProductPage() {
 
                     <hr></hr>
                     <h2>Categorias:</h2>
-                    <p>{product.categories.length === 0 ? "Sem categorias" :  product.categories.reduce((prev, curr) => `${prev.name}, ${curr.name}`)}</p>
+                    <p>{product.categories.length === 0 ? "Sem categorias" :  product.categories.join(", ")}</p>
                 </section>
             </main>
             <ProductOwner name={product.ownername} telefone={product.contact_number}/>

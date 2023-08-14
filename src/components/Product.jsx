@@ -28,9 +28,11 @@ const ProductSC = styled.div`
     border: solid 2px #EEEFF2;
     background-color: #FFF;
 
-    text-decoration: none;
-    cursor: pointer;
-    
+    a {
+        text-decoration: none;
+        color: #000;
+        cursor: pointer;
+    } 
 
     img {
         height: 450px;

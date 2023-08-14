@@ -4,6 +4,8 @@ import axios from "axios";
 import Gallery from "../components/Gallery";
 import MeCansei from "../assets/MeCanseiLogo.png"
 import AuthContext from "../AuthContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export function NewProduct() {
     
@@ -11,6 +13,7 @@ export function NewProduct() {
     const [photosPreview, setPhotosPreview] = useState([]);
     
     const token = useContext(AuthContext)
+    const navigate = useNavigate();
     
     const name = useRef();
     const desc = useRef();
@@ -28,33 +31,45 @@ export function NewProduct() {
             photosId: photosPreview.map((photo) => photo.id),
             isAvailable: true,
         }
-        
+
+        const categoriesId = await criarCategorias(data);
+        data.categoriesId = categoriesId;
+        delete data.categories;
+   
+        try {
+            console.log(data);
+            await axios.post(`${import.meta.env.VITE_API_URL}/products`, data, {headers: {"Authorization": `Bearer ${token}`}});
+            toast.success("Produto registrado com sucesso! Redirecionando para a página inicial.", {autoClose: 3000});
+            setTimeout(() => {navigate("/login")}, 3000)
+            
+        } catch (error) {
+            console.log(error); 
+            toast.error("Erro ao registrar: " + error.response.data) 
+            return;
+        }
+    }
+    
+    async function criarCategorias(data) {
         const categoriesRes = await axios.get(`${import.meta.env.VITE_API_URL}/categories`)
         const categoriesId = [];
         
         data.categories.forEach(async (cat) => {
-            const index = categoriesRes.data.findIndex((category) => category.name === cat)
+            const index = categoriesRes.data.findIndex((category) => category.name === cat);
+            console.log(categoriesRes);
+
             if(index !== -1) {
+                console.log("EXISTE")
                 categoriesId.push(categoriesRes.data[index].id);
+
             } else {
                 const response = await axios.post(`${import.meta.env.VITE_API_URL}/categories`, {name: cat})
+                console.log("Added: " + response.data.id);
                 categoriesId.push(response.data.id);
             }
         });
 
-        delete data.categories;
-        data.categoriesId = categoriesId;
-   
-        console.log(data);
-       
-        try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/products`, data, {headers: {"Authorization": `Bearer ${token}`}});
-            
-        } catch (error) {
-            console.log(error); 
-        }
-        
-
+        console.log(categoriesId);
+        return categoriesId;
     }
 
     
@@ -74,7 +89,7 @@ export function NewProduct() {
 
                 <form onSubmit={submit}>
                     <label htmlFor="name">Nome do produto</label>
-                    <input minLength={5} required ref={name} name="name" type="text" placeholder="Ex: Geladeira, Computador"/>
+                       <input minLength={5} required ref={name} name="name" type="text" placeholder="Ex: Geladeira, Computador"/>
 
                     <label htmlFor="desc">Descrição do produto:</label>
                     <textarea required ref={desc} name="desc" type="text" placeholder="Descrição do produto"/>
