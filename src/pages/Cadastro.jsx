@@ -15,12 +15,12 @@ export default function Cadastro() {
                 <input name="name" type="text" placeholder="Nome completo"/>
 
                 <label htmlFor="cpf">CPF</label>
-                <input name="cpf" type="text" placeholder="CPF"/>
+                <input name="cpf" type="text" placeholder="XXX.XXX.XXX-XX"/>
 
                 <label htmlFor="phone">Telefone</label>
                 <span>
                     <span>+55</span>
-                    <input name="phone" type="text" placeholder="(XX) XXXX-XXXX"/>
+                    <input name="phone" type="tel" placeholder="(XX) XXXX-XXXX"/>
                 </span>
 
                 <label htmlFor="email">Email</label>
@@ -36,7 +36,7 @@ export default function Cadastro() {
             </form>
         
             <footer>
-               <span>Não possui uma conta?</span> <Link>Cadastre-se</Link> 
+               <span>Já possui uma conta?</span> <Link to="/login">Faça login</Link> 
             </footer>
 
         </CadastrarSC>
@@ -68,6 +68,9 @@ const CadastrarSC = styled.div`
         background-color: #FFF;
         border-radius: 5px;
 
+        label {
+            font-weight: 500;
+        }
 
         input {
             box-sizing: border-box;

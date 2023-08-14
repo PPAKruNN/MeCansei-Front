@@ -21,7 +21,7 @@ export default function Login() {
             </form>
         
             <footer>
-               <span>Não possui uma conta?</span> <Link>Cadastre-se</Link> 
+               <span>Não possui uma conta?</span> <Link to="/cadastro">Cadastre-se</Link> 
             </footer>
 
         </LoginSC>
@@ -53,6 +53,9 @@ const LoginSC = styled.div`
         background-color: #FFF;
         border-radius: 5px;
 
+        label {
+            font-weight: 500;
+        }
 
         input {
             box-sizing: border-box;

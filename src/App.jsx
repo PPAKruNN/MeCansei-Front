@@ -2,6 +2,7 @@ import { styled } from 'styled-components'
 import Login from './pages/Login'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Cadastro from './pages/Cadastro'
+import Home from './pages/Home'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
           <div>Navbar</div>          
           <div>
             <Routes>
+              <Route path="/" element={<Home/>}/> 
               <Route path="/login" element={<Login/>}/> 
               <Route path="/cadastro" element={<Cadastro/>}/> 
             </Routes>
