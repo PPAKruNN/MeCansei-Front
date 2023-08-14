@@ -3,6 +3,8 @@ import { styled } from "styled-components"
 
 export default function Login() {
 
+    console.log(import.meta.env.VITE_API_URL)
+    
     return (
         <LoginSC>
             <div>

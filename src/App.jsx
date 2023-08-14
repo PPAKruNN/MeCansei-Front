@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import ProductPage from './pages/ProductPage'
 import { NewProduct } from './pages/NovoProduto'
 import MyProducts from './pages/MyProducts'
+import { ToastContainer } from 'react-toastify'
+import "./toast.css" // Por algum motivo o ToastContainer estava sem usar seu próprio css, então eu tive que importar manualmente.
 
 function App() {
 
@@ -14,6 +16,7 @@ function App() {
         <StyledApp>
           <div>Navbar</div>          
           <div>
+          <ToastContainer position="top-right" closeOnClick pauseOnHover/>
             <Routes>
               <Route path="/" element={<Home/>}/> 
               <Route path="/login" element={<Login/>}/> 

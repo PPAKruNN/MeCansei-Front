@@ -1,38 +1,84 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { styled } from "styled-components"
+import MeCansei from "../assets/MeCanseiLogo.png"
+import { useRef } from "react"
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function Cadastro() {
+
+    const name = useRef();
+    const cpf = useRef();
+    const phone = useRef();
+    const email = useRef();
+    const password = useRef();
+    const confirmPassword = useRef();
+    
+    const navigate = useNavigate()
+
+    async function submit(e) {
+        e.preventDefault();
+        const data = {
+            name: name.current.value,
+            cpf: cpf.current.value.toString(),
+            contact_number: phone.current.value.toString(),
+            email: email.current.value,
+            password: password.current.value,
+        }
+        
+        if(data.password !== confirmPassword.current.value) {
+            toast.error("As senhas não coincidem")
+            return;
+        }
+        
+        
+        if(cpf.current.value.length !== 11) {
+            toast.error("CPF inválido");
+            return;
+        }
+
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/signup`, data)
+            toast.success("Cadastro realizado com sucesso! Redirecionando para a página de login...", {autoClose: 3000});
+            setTimeout(() => {navigate("/login")}, 3000)
+            
+        } catch (error) {
+            toast.error("Erro ao cadastrar: " + error.response.data) 
+            return;
+        }
+
+    }
 
     return (
         <CadastrarSC>
             <div>
-                <h1>Logo</h1>
+                <img src={MeCansei}/>
                 <h1>Cadastro</h1>
             </div>
 
-            <form>
+            <form onSubmit={submit}>
                 <label htmlFor="name">Nome completo</label>
-                <input name="name" type="text" placeholder="Nome completo"/>
+                <input required ref={name} name="name" type="text" placeholder="Nome completo"/>
 
                 <label htmlFor="cpf">CPF</label>
-                <input name="cpf" type="text" placeholder="XXX.XXX.XXX-XX"/>
+                <input required ref={cpf} name="cpf" type="number" placeholder="XXX.XXX.XXX-XX"/>
 
                 <label htmlFor="phone">Telefone</label>
                 <span>
                     <span>+55</span>
-                    <input name="phone" type="tel" placeholder="(XX) XXXX-XXXX"/>
+                    <input required ref={phone} maxLength={11} name="phone" type="tel" placeholder="(XX) XXXX-XXXX"/>
                 </span>
 
                 <label htmlFor="email">Email</label>
-                <input name="email" type="email" placeholder="Email"/>
+                <input required ref={email} name="email" type="email" placeholder="Email"/>
                 
-                <label htmlFor="Password">Senha</label>
-                <input name="Password" type="password" placeholder="Senha"/>
+                <label htmlFor="a"></label>
+                <input required minLength={6} ref={password} name="Password" type="password" placeholder="Senha"/>
 
                 <label htmlFor="Password">Confirmar senha</label>
-                <input name="Password" type="password" placeholder="Confirmar senha"/>
+                <input required ref={confirmPassword} minLength={6} name="Password" type="password" placeholder="Confirmar senha"/>
 
-                <button>Login</button>
+                <button>Cadastrar</button>
             </form>
         
             <footer>
@@ -55,6 +101,18 @@ const CadastrarSC = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+       
+        gap: 16px;
+
+        img {
+            border-radius: 100% ;
+            width: 100px;
+            height: 100px;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
         
     }
 
