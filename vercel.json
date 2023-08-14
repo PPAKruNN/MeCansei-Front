@@ -1,0 +1,9 @@
+{ "routes": [
+        { "src": "/", "dest": "/", "status": 200 },
+        { "src": "/login", "dest": "/login", "status": 200 },
+        { "src": "/cadastro", "dest": "/cadastro", "status": 200 },
+        { "src": "/produto/:id", "dest": "/produto/:id", "status": 200 },
+        { "src": "/produto/novo", "dest": "/produto/novo", "status": 200 },
+        { "src": "/produto/gerenciar", "dest": "/produto/gerenciar", "status": 200 }
+    ]
+}
