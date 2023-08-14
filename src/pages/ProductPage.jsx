@@ -1,38 +1,67 @@
 import { styled } from "styled-components"
 import PhotoShow from "../components/PhotoShow";
 import ProductOwner from "../components/ProductOwner";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import AuthContext from "../AuthContext";
 
 export default function ProductPage() {
 
+    
+    const [product , setProduct] = useState();
+    const token = useContext(AuthContext);
+    
+    const { id } = useParams();
+    
+    useEffect(() => {
+        const prom = axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`, {headers: {Authorization: `Bearer ${token}`}});
+
+        prom.then((response) => { 
+            setProduct(response.data);
+            console.log(response.data);
+        });
+
+        prom.catch((error) => {
+            console.log(error);
+        });
+
+    }, [token, id]);
+
+
+
     // TODO - Arrumar string de categorias.
+    if(!product) return (<div>Carregando...</div>);
     return (
         <ProductPageSC>
             <main>
-                <PhotoShow photoArray={mockProduct.photos}/>
+                <PhotoShow photoArray={product.photos}/>
         
                 <section>
-                    <h1>R$ {mockProduct.price}</h1>
+                    <h1>R$ {product.price}</h1>
                     <hr></hr>
-                    <h1>{mockProduct.name}</h1>
+                    <h1>{product.name}</h1>
                     <h2>Descrição: </h2>
-                    <p>{mockProduct.description}</p>
+                    <p>{product.description}</p>
 
                     <hr></hr>
                     <h2>Categorias:</h2>
-                    <p>{mockProduct.categories.reduce((prev, curr) => `${prev.name}, ${curr.name}`)}</p>
+                    <p>{product.categories.length === 0 ? "Sem categorias" :  product.categories.reduce((prev, curr) => `${prev.name}, ${curr.name}`)}</p>
                 </section>
             </main>
-        
-            <ProductOwner name={"João"} telefone={"(11) 99999-9999"}/>
-        
+            <ProductOwner name={product.ownername} telefone={product.contact_number}/>
         </ProductPageSC>
     )
 }
 
 const ProductPageSC = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 48px;
+
+    main {
+        max-width: 70%;
+    }
 
     & > main section {
         box-sizing: border-box;
@@ -66,30 +95,4 @@ const ProductPageSC = styled.div`
         }
 
     } 
-
-`
-
-const mockProduct = {
-    "name": "Pc Gamer i3 3200g 8gb 240gb Ssd 500w 80 Plus",
-    "description": "Bicicleta de corrida",
-    "price": 1000,
-    "isAvailable": true,
-    "ownerid": 1,
-    "categories": [
-        {"name": "Esporte"},
-        {"name": "Lazer"},
-        {"name": "Lazer"},
-        {"name": "Lazer"}
-    ],
-    "photos": [
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/301"}
-    ]
-};
+`;

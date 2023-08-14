@@ -27,6 +27,9 @@ const ProductSC = styled.div`
     border-radius: 10px;
     border: solid 2px #EEEFF2;
     background-color: #FFF;
+
+    text-decoration: none;
+    cursor: pointer;
     
 
     img {

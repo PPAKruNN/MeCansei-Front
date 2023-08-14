@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import Product from "../components/Product";
 
-export default function MyProducts() {
+export default function MyProducts(prod) {
     return (
         <MyProductsSC>
             <h1>Seus produtos</h1> 

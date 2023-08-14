@@ -9,14 +9,14 @@ export default function PhotoShow({photoArray}) {
     function genPhoto() {
         return photoArray.map((photo, index) => {
             return (
-                <Photo key={index} onClick={() => setHighlightedPhoto(index)} src={photo.url}/>
+                <Photo key={index} onClick={() => setHighlightedPhoto(index)} src={photo}/>
             );
         });
     }
     
     return (
         <PhotoShowSC>
-            <img src={photoArray[highlightedPhoto].url}></img>
+            <img src={photoArray[highlightedPhoto]}></img>
             <aside>
                 {genPhoto()}
             </aside>
@@ -37,6 +37,7 @@ const PhotoShowSC = styled.div`
     border-radius: 5px;
     padding: 10px;
     border: 2px solid #EEEFF2;
+    
 
     & > img {
         width: 75%;
@@ -47,9 +48,10 @@ const PhotoShowSC = styled.div`
         object-fit: contain;
 
         transition: 0.2s;
+        
         &:hover {
             transition: 0.2s;
-            width: 40%;
+            width: 70%;
             position: absolute;
             z-index: 2;
             
