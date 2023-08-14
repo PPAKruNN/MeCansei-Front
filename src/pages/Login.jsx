@@ -39,6 +39,7 @@ export default function Login() {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/signin`, data)
             localStorage.setItem("token", response.data.token)
             window.location.reload();
+            navigate("/");
         } catch (error) {
             console.log(error);
             toast.error("Erro ao logar: " + error.response.data);
