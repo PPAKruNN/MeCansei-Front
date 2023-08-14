@@ -19,6 +19,7 @@ export function NewProduct() {
     const desc = useRef();
     const price = useRef();
     const cat = useRef();
+    
 
     async function submit(e) {
         e.preventDefault();
@@ -35,7 +36,19 @@ export function NewProduct() {
         const categoriesId = await criarCategorias(data);
         data.categoriesId = categoriesId;
         delete data.categories;
-   
+
+        if(data.photosId.length === 0) {
+            toast.error("Você precisa adicionar pelo menos uma foto do produto!");
+            return;
+        }
+ 
+        // Por algum motivo tá rolando um race condition em algum lugar
+        // ainda não descobri onde, mas isso aqui resolve o problema MOMENTANEAMENTE.
+        setTimeout(() => {enviarDados(data)}, 3000)
+        
+    }
+    
+    async function enviarDados(data) {
         try {
             console.log(data);
             await axios.post(`${import.meta.env.VITE_API_URL}/products`, data, {headers: {"Authorization": `Bearer ${token}`}});
@@ -47,6 +60,7 @@ export function NewProduct() {
             toast.error("Erro ao registrar: " + error.response.data) 
             return;
         }
+        
     }
     
     async function criarCategorias(data) {
@@ -68,6 +82,7 @@ export function NewProduct() {
             }
         });
 
+        console.log("Finished")
         console.log(categoriesId);
         return categoriesId;
     }
@@ -101,7 +116,9 @@ export function NewProduct() {
                     </span>
 
                     <label htmlFor="cat">Categorias</label>
+                    <p>Categorias são escritas separadas por vírgula</p>
                     <input required ref={cat} name="cat" type="text" placeholder="Ex: Eletrônicos, Eletrodomésticos"/>
+                    
 
                     <label htmlFor="">Selecionar fotos</label>
                     <button type="button" onClick={() => setModalOpen(true)}>Abrir galeria</button>
@@ -161,9 +178,16 @@ const NewProductSC = styled.div`
             font-weight: 500;
         }
 
+        p {
+            color: gray;
+            font-size: 14px;
+            font-weight: 500;
+            margin: 5px 0px;
+        }
+
         section {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             gap: 10px;
             margin-bottom: 32px;
             

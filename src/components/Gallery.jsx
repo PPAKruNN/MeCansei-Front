@@ -77,7 +77,6 @@ export default function Gallery({onClose}) {
         
 
             <aside>
-                <button onClick={() => onClose(selectedPhotos)}>Terminar Seleção</button>
                 <h1>Adicionar nova imagem à galeria</h1>
                 <form onSubmit={addPhoto}>
                     <label htmlFor="url">Url da imagem</label>
@@ -85,6 +84,7 @@ export default function Gallery({onClose}) {
 
                     <button type="submit">Adicionar</button>
                 </form>
+                <button onClick={() => onClose(selectedPhotos)}>Terminar Seleção</button>
             </aside>
         
         
@@ -140,6 +140,20 @@ const GallerySC = styled.div`
         h1 {
             font-size: 24px;
             font-weight: 500;
+        }
+
+        & > button {
+
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 5px;
+
+            background-color: gray;
+            border: none;
+            
+            color: #FFF;
+            font-weight: bold;
         }
 
         & > form {
