@@ -1,18 +1,30 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
+import AuthContext from "../AuthContext";
 
 // eslint-disable-next-line react/prop-types
 export default function Gallery({onClose}) {
 
-    const [photosArray, setPhotosArray] = useState([
-        {url: "https://picsum.photos/200/300", id: 2},
-        {url: "https://picsum.photos/200/300", id: 3},
-        {url: "https://picsum.photos/200/300", id: 4},
-        {url: "https://picsum.photos/200/300", id: 5},
-        {url: "https://picsum.photos/200/300", id: 6}
-    ]);
+    const [photosArray, setPhotosArray] = useState([]);
     const [selectedPhotos, setSelectedPhotos] = useState([]);
     const [urlInput, setUrlInput] = useState("");
+    
+    const token = useContext(AuthContext);
+   
+    const url = useRef();
+    
+    useEffect(() => {
+       const prom = axios.get(`${import.meta.env.VITE_API_URL}/gallery`, {headers: {"Authorization": `Bearer ${token}`}});
+        prom.then((response) => {
+            console.log(response.data)
+            setPhotosArray(response.data);
+        });
+        prom.catch((err) => {
+            console.log(err);
+        });
+
+    }, [token]);
     
     function genPhoto() {
         const arr = photosArray.map((photo, index) => {
@@ -38,6 +50,17 @@ export default function Gallery({onClose}) {
 
     function addPhoto(e) {
         e.preventDefault();
+       
+        const prom = axios.post(`${import.meta.env.VITE_API_URL}/gallery`, {url: url.current.value}, {headers: {"Authorization": `Bearer ${token}`}});
+        console.log(token)
+        prom.then((response) => {
+            console.log(response.data);
+        });
+        
+        prom.catch((err) => {
+            console.log(err);
+        });
+
         setPhotosArray([...photosArray, {url: urlInput, id: photosArray.length + 1}]);
         setUrlInput("");
     }
@@ -48,7 +71,7 @@ export default function Gallery({onClose}) {
             <main>
                 <h1>Galeria de fotos</h1>
                 <div>
-                    {genPhoto() ?? <h1>Adicione fotos</h1>}   
+                    {genPhoto() ?? <p>Adicione fotos</p>}   
                 </div>
             </main>
         
@@ -58,7 +81,7 @@ export default function Gallery({onClose}) {
                 <h1>Adicionar nova imagem à galeria</h1>
                 <form onSubmit={addPhoto}>
                     <label htmlFor="url">Url da imagem</label>
-                    <input value={urlInput} onChange={changeInput} name="url" required type="url" placeholder="https://example.com/corn.jpeg"/>
+                    <input ref={url} value={urlInput} onChange={changeInput} name="url" required type="url" placeholder="https://example.com/corn.jpeg"/>
 
                     <button type="submit">Adicionar</button>
                 </form>
@@ -77,6 +100,7 @@ const GallerySC = styled.div`
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 48px;
 
     width: 80%;

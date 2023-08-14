@@ -45,6 +45,16 @@ const PhotoShowSC = styled.div`
         background-color: #EEEFF2;
 
         object-fit: contain;
+
+        transition: 0.2s;
+        &:hover {
+            transition: 0.2s;
+            width: 40%;
+            position: absolute;
+            z-index: 2;
+            
+            object-fit: cover;
+        }
     }
 
     aside {

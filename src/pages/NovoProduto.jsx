@@ -1,11 +1,62 @@
-import { useState } from "react";
+import { useState, useRef, useContext } from "react";
 import { styled } from "styled-components";
+import axios from "axios";
 import Gallery from "../components/Gallery";
+import MeCansei from "../assets/MeCanseiLogo.png"
+import AuthContext from "../AuthContext";
 
 export function NewProduct() {
     
     const [modalOpen, setModalOpen] = useState(false);
     const [photosPreview, setPhotosPreview] = useState([]);
+    
+    const token = useContext(AuthContext)
+    
+    const name = useRef();
+    const desc = useRef();
+    const price = useRef();
+    const cat = useRef();
+
+    async function submit(e) {
+        e.preventDefault();
+
+        const data = {
+            name: name.current.value,
+            description: desc.current.value,
+            price: Number(price.current.value),
+            categories: cat.current.value.split(",").map((cat) => cat.trim()),
+            photosId: photosPreview.map((photo) => photo.id),
+            isAvailable: true,
+        }
+        
+        const categoriesRes = await axios.get(`${import.meta.env.VITE_API_URL}/categories`)
+        const categoriesId = [];
+        
+        data.categories.forEach(async (cat) => {
+            const index = categoriesRes.data.findIndex((category) => category.name === cat)
+            if(index !== -1) {
+                categoriesId.push(categoriesRes.data[index].id);
+            } else {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/categories`, {name: cat})
+                categoriesId.push(response.data.id);
+            }
+        });
+
+        delete data.categories;
+        data.categoriesId = categoriesId;
+   
+        console.log(data);
+       
+        try {
+            await axios.post(`${import.meta.env.VITE_API_URL}/products`, data, {headers: {"Authorization": `Bearer ${token}`}});
+            
+        } catch (error) {
+            console.log(error); 
+        }
+        
+
+    }
+
     
     function selectedPhotos(photos) {
         setModalOpen(false);
@@ -17,25 +68,25 @@ export function NewProduct() {
             {modalOpen ? <Gallery onClose={selectedPhotos}/> : null}
             <NewProductSC $modalOpen={modalOpen}>
                 <div>
-                    <h1>Logo</h1>
+                    <img src={MeCansei}/>
                     <h1>Anunciar novo produto</h1>
                 </div>
 
-                <form>
+                <form onSubmit={submit}>
                     <label htmlFor="name">Nome do produto</label>
-                    <input name="name" type="text" placeholder="Ex: Geladeira, Computador"/>
+                    <input minLength={5} required ref={name} name="name" type="text" placeholder="Ex: Geladeira, Computador"/>
 
                     <label htmlFor="desc">Descrição do produto:</label>
-                    <textarea name="desc" type="text" placeholder="Descrição do produto"/>
+                    <textarea required ref={desc} name="desc" type="text" placeholder="Descrição do produto"/>
 
                     <label htmlFor="price">Preço do produto</label>
                     <span>
                         <span>R$</span>
-                        <input name="price" type="number" placeholder="100.00"/>
+                        <input required ref={price} name="price" type="number" placeholder="100.00"/>
                     </span>
 
                     <label htmlFor="cat">Categorias</label>
-                    <input name="cat" type="text" placeholder="Ex: Eletrônicos, Eletrodomésticos"/>
+                    <input required ref={cat} name="cat" type="text" placeholder="Ex: Eletrônicos, Eletrodomésticos"/>
 
                     <label htmlFor="">Selecionar fotos</label>
                     <button type="button" onClick={() => setModalOpen(true)}>Abrir galeria</button>
@@ -65,6 +116,19 @@ const NewProductSC = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+       
+        gap: 16px;
+
+        img {
+            border-radius: 100% ;
+            width: 100px;
+            height: 100px;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
+        
         
     }
 

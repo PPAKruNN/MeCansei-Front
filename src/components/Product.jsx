@@ -1,15 +1,18 @@
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 // eslint-disable-next-line react/prop-types
-export default function Product({photoUrl, name, price}) {
+export default function Product({photoUrl, name, price, prodId}) {
     
     return (
         <ProductSC>
-            <img src={photoUrl} alt={name}/>
-            <div>
-                <h3>{name}</h3>
-                <p>{price}</p>
-            </div>
+            <Link to={`produto/${prodId}`}>
+                <img src={photoUrl} alt={name}/>
+                <div>
+                    <h3>{name}</h3>
+                    <p>R$ {price}</p>
+                </div>
+            </Link>
         </ProductSC>  
     )
 }

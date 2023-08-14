@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom"
 import { styled } from "styled-components"
 import MeCansei from "../assets/MeCanseiLogo.png"
-import { useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { toast } from "react-toastify";
 import axios from "axios";
+import AuthContext from "../AuthContext";
 
 export default function Cadastro() {
+
+    const navigate = useNavigate(); 
+    const token = useContext(AuthContext);
 
     const name = useRef();
     const cpf = useRef();
@@ -14,7 +18,9 @@ export default function Cadastro() {
     const password = useRef();
     const confirmPassword = useRef();
     
-    const navigate = useNavigate()
+    useEffect(() => {
+        if(token) navigate("/");
+    }, [navigate, token]) 
 
     async function submit(e) {
         e.preventDefault();

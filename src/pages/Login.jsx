@@ -1,23 +1,63 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { styled } from "styled-components"
+import MeCansei from "../assets/MeCanseiLogo.png"
+import { useContext, useEffect, useRef } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import AuthContext from "../AuthContext";
 
 export default function Login() {
-
-    console.log(import.meta.env.VITE_API_URL)
     
+    const navigate = useNavigate(); 
+    const token = useContext(AuthContext);
+
+    const auth = useRef();
+    const password = useRef();
+    
+    useEffect(() => {
+        if(token) navigate("/");
+    }, [navigate, token]) 
+
+    async function submit(e) {
+        e.preventDefault();
+        
+        const data = {
+            auth: auth.current.value,
+            password: password.current.value
+        }
+   
+        if(data.auth.includes("@") ) {
+            data.email = data.auth;
+        } else {
+            data.cpf = data.auth;
+        }
+        delete data.auth;
+        
+        console.log(data);
+        
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/signin`, data)
+            localStorage.setItem("token", response.data.token)
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+            toast.error("Erro ao logar: " + error.response.data);
+        }
+    }
+
     return (
         <LoginSC>
             <div>
-                <h1>Logo</h1>
-                <h1>Entrar</h1>
+                <img src={MeCansei}/>
+                <h1>Login</h1>
             </div>
 
-            <form>
+            <form onSubmit={submit}>
                 <label htmlFor="Username">Usuário</label>
-                <input name="Username" type="text" placeholder="CPF ou Email"/>
+                <input ref={auth} name="Username" type="text" placeholder="CPF ou Email"/>
 
                 <label htmlFor="Password">Senha</label>
-                <input name="Password" type="password" placeholder="Senha"/>
+                <input ref={password} name="Password" type="password" placeholder="Senha"/>
 
                 <button>Login</button>
             </form>
@@ -38,10 +78,22 @@ const LoginSC = styled.div`
 
     width: 300px;
 
-    & > div:nth-child(1) {
+     > div:nth-child(1) {
         display: flex;
         flex-direction: column;
         align-items: center;
+       
+        gap: 16px;
+
+        img {
+            border-radius: 100% ;
+            width: 100px;
+            height: 100px;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
         
     }
 
