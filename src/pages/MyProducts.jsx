@@ -1,20 +1,68 @@
 import { styled } from "styled-components";
 import Product from "../components/Product";
+import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../AuthContext";
+import axios from "axios";
 
-export default function MyProducts(prod) {
+export default function MyProducts() {
+
+    const navigate = useNavigate(); 
+    const token = useContext(AuthContext);
+    
+    const [products, setProducts] = useState([]);
+    
+    useEffect(() => {
+        if(!token) navigate("/login");
+        
+        const prom = axios.get(`${import.meta.env.VITE_API_URL}/myproducts`, {headers: {"Authorization": `Bearer ${token}`}});
+        prom.then((response) => {
+            console.log(response.data);
+            setProducts(response.data);
+        });
+
+
+    }, [navigate, token]) 
+
+    async function changeAvailability(index) {
+        const newProds = [...products];
+        newProds[index].isavailable = !newProds[index].isavailable;
+        setProducts(newProds);
+        
+        console.log(products[index].id);
+
+        await axios.patch(`${import.meta.env.VITE_API_URL}/products/${products[index].id}/availabilty`, {isavailable: newProds[index].isavailable}, {headers: {"Authorization": `Bearer ${token}`}});
+    }
+    
+    async function deleteProduct(index) {
+        const newProds = [...products];
+        newProds.splice(index, 1);
+        setProducts(newProds);
+        
+        await axios.delete(`${import.meta.env.VITE_API_URL}/products/${products[index].id}`, {headers: {"Authorization": `Bearer ${token}`}});
+    }
+
+
+
     return (
         <MyProductsSC>
             <h1>Seus produtos</h1> 
 
-            <div>
-                <Product photoUrl={"https://picsum.photos/200/300"} name={"Bicicreta"} price={1000}/>
-                <aside>
-                    <h1>Ações: </h1>
-                    <button>Marcar como vendido!</button>
-                    <p>Atualmente: Vendido</p>
-                    <button>Apagar</button> 
-                </aside>
-            </div> 
+            {   
+                products.length === 0 ? 
+                <h2> Nenhum produto encontrado </h2> : 
+                products.map((product,index ) => (
+                    <div key={index}>
+                        <Product photoUrl={product.photos[0]} name={product.name} price={product.price} prodId={product.id}/>
+                        <aside>
+                            <h1>Ações: </h1>
+                            <button onClick={() => changeAvailability(index)}>Marcar como {!product.isavailable ? "disponível" : "vendido"}!</button>
+                            <p>Atualmente: {product.isavailable ? "Disponível" : "Vendido"}</p>
+                            <button onClick={() => deleteProduct(index)}>Apagar</button> 
+                        </aside>
+                    </div> 
+                ))
+            }
 
         </MyProductsSC>
     );
