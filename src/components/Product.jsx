@@ -1,13 +1,14 @@
 import { styled } from "styled-components";
 
-export default function Product() {
+// eslint-disable-next-line react/prop-types
+export default function Product({photoUrl, name, price}) {
     
     return (
         <ProductSC>
-            <img src={mockProduct.photosId[0].url} alt={mockProduct.name}/>
+            <img src={photoUrl} alt={name}/>
             <div>
-                <h3>{mockProduct.name}</h3>
-                <p>{mockProduct.price}</p>
+                <h3>{name}</h3>
+                <p>{price}</p>
             </div>
         </ProductSC>  
     )
@@ -52,19 +53,3 @@ const ProductSC = styled.div`
         }
     }
 `;
-
-const mockProduct = {
-    "name": "Bicicleta",
-    "description": "Bicicleta de corrida",
-    "price": 1000,
-    "isAvailable": true,
-    "ownerid": 1,
-    "categoriesId": [
-        {"name": "Esporte"},
-        {"name": "Lazer"}
-    ],
-    "photosId": [
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/301"}
-    ]
-};
