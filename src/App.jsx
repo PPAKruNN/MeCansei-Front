@@ -5,7 +5,7 @@ import Cadastro from './pages/Cadastro'
 import Home from './pages/Home'
 import ProductPage from './pages/ProductPage'
 import { NewProduct } from './pages/NovoProduto'
-import Gallery from './components/Gallery'
+import MyProducts from './pages/MyProducts'
 
 function App() {
 
@@ -20,7 +20,7 @@ function App() {
               <Route path="/cadastro" element={<Cadastro/>}/> 
               <Route path="/produto/:id" element={<ProductPage/>}/> 
               <Route path="/produto/novo" element={<NewProduct/>}/> 
-              <Route path="/teste" element={<Gallery/>}/> 
+              <Route path="/produto/gerenciar" element={<MyProducts/>}/> 
             </Routes>
           </div>
         </StyledApp>

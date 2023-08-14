@@ -50,21 +50,6 @@ export function NewProduct() {
 
 }
 
-const mockProduct = {
-    "name": "Bicicleta",
-    "description": "Bicicleta de corrida",
-    "price": 1000,
-    "isAvailable": true,
-    "ownerid": 1,
-    "categoriesId": [
-        {"name": "Esporte"},
-        {"name": "Lazer"}
-    ],
-    "photosId": [
-        {"url": "https://picsum.photos/200/300"},
-        {"url": "https://picsum.photos/200/301"}
-    ]
-};
 
 const NewProductSC = styled.div`
     display: flex;
